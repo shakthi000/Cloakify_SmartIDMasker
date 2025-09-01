@@ -1,7 +1,0 @@
-flask
-pytesseract
-opencv-python-headless
-pdf2image
-Pillow
-spacy
-gunicorn

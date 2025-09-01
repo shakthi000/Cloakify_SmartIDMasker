@@ -1,3 +1,6 @@
+import pytesseract
+pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
+
 from flask import Flask, request, render_template, url_for
 from processor import process_file
 import os

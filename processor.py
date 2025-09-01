@@ -1,12 +1,11 @@
 import pytesseract
+pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
+
 from pytesseract import Output
 import cv2
 import re
 import os
 from werkzeug.utils import secure_filename
-
-# Ensure pytesseract knows the path on Render
-pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 
 # Regex patterns for sensitive data
 patterns = [

@@ -1,11 +1,12 @@
 import pytesseract
-pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
-
 from pytesseract import Output
 import cv2
 import re
 import os
 from werkzeug.utils import secure_filename
+
+# Ensure pytesseract knows the path on Render
+pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 
 # Regex patterns for sensitive data
 patterns = [
@@ -34,7 +35,7 @@ def blur_area(img, x, y, w, h):
     return img
 
 def blackout_area(img, x, y, w, h):
-    cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 0), -1)
+    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 0, 0), -1)
     return img
 
 def process_image(img_path, output_path, mask_type):

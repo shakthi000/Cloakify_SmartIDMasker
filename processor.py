@@ -7,9 +7,6 @@ import re
 import os
 from werkzeug.utils import secure_filename
 
-# Ensure pytesseract knows where Tesseract is
-pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"  # Render uses Ubuntu path
-
 # Regex patterns for sensitive data
 patterns = [
     re.compile(r"\b\d{3}-\d{2}-\d{4}\b"),  # SSN

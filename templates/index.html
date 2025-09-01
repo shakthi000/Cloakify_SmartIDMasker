@@ -7,11 +7,11 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root {
-    --bg1:#0f172a; /* slate-900 */
-    --bg2:#1e293b; /* slate-800 */
-    --brand:#7c3aed; /* violet-600 */
-    --brand-2:#22d3ee; /* cyan-400 */
-    --accent:#22c55e; /* green-500 */
+    --bg1:#0f172a;
+    --bg2:#1e293b;
+    --brand:#7c3aed;
+    --brand-2:#22d3ee;
+    --accent:#22c55e;
   }
 
   body {
@@ -23,7 +23,6 @@
     color: #e5e7eb;
   }
 
-  /* Glass card */
   .glass {
     background: rgba(255,255,255,0.08);
     backdrop-filter: blur(12px);
@@ -31,7 +30,6 @@
     border: 1px solid rgba(255,255,255,0.12);
   }
 
-  /* Glow hover */
   .glow-hover {
     transition: transform .25s ease, box-shadow .3s ease, border-color .3s ease;
   }
@@ -41,11 +39,9 @@
     border-color: rgba(124,58,237,.5);
   }
 
-  /* Fade/slide-in for sections */
   .fade-in { animation: fadeIn .8s ease forwards; opacity: 0; transform: translateY(8px); }
   @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 
-  /* Processing overlay */
   .overlay {
     position: fixed; inset: 0;
     background: rgba(10, 10, 20, .75);
@@ -59,7 +55,6 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Cinematic reveal on images */
   .reveal {
     position: relative;
     overflow: hidden;
@@ -84,7 +79,6 @@
   @keyframes wipe { to { transform: translateX(110%); } }
   @keyframes imgIn { to { opacity:1; transform: scale(1); } }
 
-  /* Drag & Drop area */
   .dropzone {
     border: 2px dashed rgba(255,255,255,0.25);
     transition: border-color .25s ease, background-color .25s ease;
@@ -94,14 +88,12 @@
     background: rgba(34,211,238,.08);
   }
 
-  /* Tiny badge */
   .badge {
     background: linear-gradient(90deg, var(--brand), var(--brand-2));
   }
 </style>
 </head>
 <body class="pb-20">
-  <!-- Processing overlay -->
   <div id="overlay" class="overlay">
     <div class="flex flex-col items-center gap-4">
       <div class="spinner"></div>
@@ -110,11 +102,9 @@
   </div>
 
   <header class="max-w-6xl mx-auto px-4 pt-10 pb-6 fade-in text-center">
-    <!-- Logo -->
     <div class="mb-6">
       <img src="{{ url_for('static', filename='logo.png') }}" alt="App Logo" class="mx-auto w-28 h-auto drop-shadow-lg">
     </div>
-
     <div class="flex items-center justify-center gap-3 mb-3">
       <span class="badge text-xs font-semibold px-2.5 py-1 rounded-full text-white">Built By The Conquerors</span>
       <span class="text-xs text-slate-300">Blur / Blackout • Image • Live Preview</span>
@@ -129,7 +119,6 @@
   </header>
 
   <main class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-start">
-    <!-- Upload Card -->
     <form method="post" enctype="multipart/form-data"
           class="glass glow-hover rounded-2xl p-6 fade-in"
           id="uploadForm">
@@ -138,7 +127,6 @@
         <div class="text-xs text-slate-300">PNG • JPG </div>
       </div>
 
-      <!-- Drag & Drop -->
       <label for="fileInput" id="dropzone"
              class="dropzone rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -150,7 +138,6 @@
         <input id="fileInput" class="hidden" type="file" name="file" />
       </label>
 
-      <!-- Error messages -->
       <div id="errorMsg" class="text-red-400 text-xs mt-2 hidden"></div>
 
       <div class="mt-6">
@@ -172,25 +159,18 @@
       </p>
     </form>
 
-    <!-- Preview Pane -->
     <section class="fade-in">
-      {% if preview_imgs %}
+      {% if preview_img %}
         <div class="glass rounded-2xl p-5">
           <div class="flex items-center justify-between mb-3">
             <h2 class="text-xl font-bold">Preview</h2>
-            <a href="{{ download_url }}" download
+            <a href="{{ preview_img }}" download
                class="rounded-lg bg-emerald-500/90 hover:bg-emerald-500 px-4 py-2 text-sm font-semibold text-white shadow">
               📥 Download
             </a>
           </div>
-
-          <!-- Stacked previews with reveal animation -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[70vh] overflow-auto pr-1">
-            {% for img in preview_imgs %}
-              <div class="reveal rounded-lg overflow-hidden border border-white/10 bg-black/20">
-                <img src="{{ img }}" alt="Masked Preview" class="block w-full h-auto" onload="readyReveal(this)">
-              </div>
-            {% endfor %}
+          <div class="reveal rounded-lg overflow-hidden border border-white/10 bg-black/20">
+            <img src="{{ preview_img }}" alt="Masked Preview" class="block w-full h-auto" onload="readyReveal(this)">
           </div>
         </div>
       {% else %}
@@ -219,88 +199,40 @@
     const errorMsg = document.getElementById('errorMsg');
 
     const validTypes = ['image/png', 'image/jpeg'];
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    const maxSize = 5 * 1024 * 1024;
 
     function validateFile(file) {
-      if (!file) {
-        showError("⚠️ Please select a file.");
-        return false;
-      }
-      if (!validTypes.includes(file.type)) {
-        showError("❌ Invalid file type. Only PNG, JPG, JPEG allowed.");
-        return false;
-      }
-      if (file.size > maxSize) {
-        showError("📦 File is too large. Max 5MB allowed.");
-        return false;
-      }
-      clearError();
-      return true;
+      if (!file) { showError("⚠️ Please select a file."); return false; }
+      if (!validTypes.includes(file.type)) { showError("❌ Invalid file type."); return false; }
+      if (file.size > maxSize) { showError("📦 File is too large."); return false; }
+      clearError(); return true;
     }
 
-    function showError(msg) {
-      errorMsg.textContent = msg;
-      errorMsg.classList.remove("hidden");
-    }
-
-    function clearError() {
-      errorMsg.textContent = "";
-      errorMsg.classList.add("hidden");
-    }
+    function showError(msg) { errorMsg.textContent = msg; errorMsg.classList.remove("hidden"); }
+    function clearError() { errorMsg.textContent=""; errorMsg.classList.add("hidden"); }
 
     drop.addEventListener('click', () => fileInput.click());
-
-    drop.addEventListener('dragover', e => {
-      e.preventDefault();
-      drop.classList.add('dragover');
-    });
-
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('dragover'); });
     drop.addEventListener('dragleave', () => drop.classList.remove('dragover'));
-
     drop.addEventListener('drop', e => {
-      e.preventDefault();
-      drop.classList.remove('dragover');
-      if (e.dataTransfer.files && e.dataTransfer.files.length) {
-        const file = e.dataTransfer.files[0];
-        if (validateFile(file)) {
-          fileInput.files = e.dataTransfer.files;
-          fileName.textContent = file.name;
-        } else {
-          fileInput.value = "";
-          fileName.textContent = "No file selected";
-        }
-      }
+      e.preventDefault(); drop.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (validateFile(file)) { fileInput.files = e.dataTransfer.files; fileName.textContent=file.name; }
+      else { fileInput.value=""; fileName.textContent="No file selected"; }
     });
 
     fileInput.addEventListener('change', () => {
       const file = fileInput.files[0];
-      if (validateFile(file)) {
-        fileName.textContent = file.name;
-      } else {
-        fileInput.value = "";
-        fileName.textContent = "No file selected";
-      }
+      if (validateFile(file)) { fileName.textContent=file.name; }
+      else { fileInput.value=""; fileName.textContent="No file selected"; }
     });
 
     form.addEventListener('submit', e => {
       const file = fileInput.files[0];
-
-      if (!file) {
-        e.preventDefault();
-        showError("⚠️ Please select a file.");
-        fileName.textContent = "No file selected";
-        return false;
-      }
-
-      if (!validateFile(file)) {
-        e.preventDefault();
-        return false;
-      }
-
-      overlay.style.display = 'grid';
+      if (!file || !validateFile(file)) { e.preventDefault(); return false; }
+      overlay.style.display='grid';
     });
 
-    // Reveal animation hook
     function readyReveal(imgEl) {
       const wrap = imgEl.closest('.reveal');
       if (wrap) wrap.classList.add('ready');

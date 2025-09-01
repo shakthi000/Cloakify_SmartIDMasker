@@ -33,10 +33,11 @@ def upload():
 
     return render_template(
         "index.html",
-        preview_img=preview_img,
+        preview_imgs=[preview_img] if preview_img else [],
         download_url=download_url,
         error=error
     )
+
 
 if __name__ == "__main__":
     app.run(debug=True)

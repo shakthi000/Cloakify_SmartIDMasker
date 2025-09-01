@@ -1,6 +1,3 @@
-import pytesseract
-pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
-
 from flask import Flask, request, render_template, url_for
 from processor import process_file
 import os
@@ -31,12 +28,10 @@ def upload():
             except Exception as e:
                 error = f"Processing failed: {e}"
 
-    return render_template(
-        "index.html",
-        preview_img=preview_img,
-        download_url=download_url,
-        error=error
-    )
+    return render_template("index.html",
+                           preview_img=preview_img,
+                           download_url=download_url,
+                           error=error)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000, debug=True)

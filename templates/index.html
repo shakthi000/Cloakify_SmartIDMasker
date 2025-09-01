@@ -94,6 +94,7 @@
 </style>
 </head>
 <body class="pb-20">
+  <!-- Overlay -->
   <div id="overlay" class="overlay">
     <div class="flex flex-col items-center gap-4">
       <div class="spinner"></div>
@@ -119,53 +120,53 @@
   </header>
 
   <main class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-8 items-start">
-    <form method="post" enctype="multipart/form-data"
-          class="glass glow-hover rounded-2xl p-6 fade-in"
-          id="uploadForm">
+    <!-- Upload Form -->
+    <form method="post" enctype="multipart/form-data" class="glass glow-hover rounded-2xl p-6 fade-in" id="uploadForm">
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-xl font-bold">Upload & Options</h2>
-        <div class="text-xs text-slate-300">PNG • JPG </div>
+        <div class="text-xs text-slate-300">PNG • JPG</div>
       </div>
 
-      <label for="fileInput" id="dropzone"
-             class="dropzone rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer">
+      <label for="fileInput" id="dropzone" class="dropzone rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             d="M3 15a4 4 0 014-4h1m8 0h1a4 4 0 010 8H7a4 4 0 01-4-4m12-9l-3-3m0 0l-3 3m3-3v12" />
         </svg>
         <div class="text-slate-200"><strong>Click to choose</strong> or drag & drop</div>
         <div id="fileName" class="text-xs text-slate-400 mt-1">No file selected</div>
-        <input id="fileInput" class="hidden" type="file" name="file" />
+        <input id="fileInput" class="hidden" type="file" name="file"/>
       </label>
 
       <div id="errorMsg" class="text-red-400 text-xs mt-2 hidden"></div>
 
       <div class="mt-6">
         <label class="block text-sm mb-2">Mask Style</label>
-        <select name="mask_type"
-                class="w-full rounded-lg bg-slate-900/40 border border-white/10 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400">
+        <select name="mask_type" class="w-full rounded-lg bg-slate-900/40 border border-white/10 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-400">
           <option value="blur">Blur (Natural)</option>
           <option value="black">Blackout (Solid)</option>
         </select>
       </div>
 
-      <button type="submit"
-              class="mt-6 w-full rounded-xl bg-gradient-to-r from-violet-600 to-cyan-400 text-slate-900 font-bold py-3 shadow-lg hover:opacity-95 transition">
+      <button type="submit" class="mt-6 w-full rounded-xl bg-gradient-to-r from-violet-600 to-cyan-400 text-slate-900 font-bold py-3 shadow-lg hover:opacity-95 transition">
         Upload & Mask
       </button>
+
+      {% if error %}
+        <p class="text-red-400 text-sm mt-3">{{ error }}</p>
+      {% endif %}
 
       <p class="text-xs text-slate-400 mt-3">
         We run OCR locally on the server you host. No data is stored beyond your session.
       </p>
     </form>
 
+    <!-- Preview Section -->
     <section class="fade-in">
       {% if preview_img %}
         <div class="glass rounded-2xl p-5">
           <div class="flex items-center justify-between mb-3">
             <h2 class="text-xl font-bold">Preview</h2>
-            <a href="{{ preview_img }}" download
-               class="rounded-lg bg-emerald-500/90 hover:bg-emerald-500 px-4 py-2 text-sm font-semibold text-white shadow">
+            <a href="{{ preview_img }}" download class="rounded-lg bg-emerald-500/90 hover:bg-emerald-500 px-4 py-2 text-sm font-semibold text-white shadow">
               📥 Download
             </a>
           </div>

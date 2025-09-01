@@ -30,7 +30,7 @@ def upload():
         except Exception as e:
             return render_template("index.html", preview_imgs=[], download_url=None, error=f"Processing failed: {e}")
 
-        if isinstance(results, list):  # Multiple images (PDF)
+        if isinstance(results, list):  # Multiple images (PDF,PNG,JPG)
             preview_imgs = [url_for("static", filename="output/" + os.path.basename(r)) for r in results]
             zip_path = tempfile.NamedTemporaryFile(delete=False, suffix=".zip").name
             with zipfile.ZipFile(zip_path, 'w') as zipf:

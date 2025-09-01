@@ -7,7 +7,6 @@ from werkzeug.utils import secure_filename
 
 # 🔹 Set Tesseract path for Windows (adjust if installed elsewhere)
 # On Linux/Mac, you can remove this line
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 # Regex patterns for sensitive data
 patterns = [
